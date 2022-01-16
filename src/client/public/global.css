@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css?family=Cinzel|Lato&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url('images/warrior_background.jpg');
+  /* background: url('images/bg-pattern.jpg'); */
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'cinzel', serif;
+}
+
+p {
+  font-family: 'lato', serif;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  grid-template-areas:
+    'descrizione  arma-riserva   pendente'
+    'descrizione  arma-riserva   pendente'
+    'descrizione  arma-riserva   pendente'
+    'arma-sx      arma-riserva   arma-dx'
+    'arma-sx      pot-riserva1   arma-dx'
+    'arma-sx      pot-riserva2   arma-dx'
+    'arma-sx      armatura       arma-dx'
+    'pot-sx1      armatura       pot-dx1'
+    'pot-sx2      armatura       pot-dx2'
+    'brace        armatura       estus'
+    'brace        pot-armatura1  estus'
+    'brace        pot-armatura2  estus';
+  padding: 20px;
+  height: 100%;
+}
+
+.card-grid > div {
+  margin: 5px;
+}
+
+.descrizione {
+  overflow: auto;
+  grid-area: descrizione;
+  padding: 10px !important;
+}
+.arma-sx {
+  grid-area: arma-sx;
+}
+.pot-sx1 {
+  grid-area: pot-sx1;
+}
+.pot-sx2 {
+  grid-area: pot-sx2;
+}
+.arma-dx {
+  grid-area: arma-dx;
+}
+.pot-dx1 {
+  grid-area: pot-dx1;
+}
+.pot-dx2 {
+  grid-area: pot-dx2;
+}
+.arma-riserva {
+  grid-area: arma-riserva;
+}
+.pot-riserva1 {
+  grid-area: pot-riserva1;
+}
+.pot-riserva2 {
+  grid-area: pot-riserva2;
+}
+.armatura {
+  grid-area: armatura;
+}
+.pot-armatura {
+  grid-area: pot-armatura1;
+}
+.pot-armatura {
+  grid-area: pot-armatura2;
+}
+.pendente {
+  grid-area: pendente;
+}
+.brace {
+  grid-area: brace;
+}
+.estus {
+  grid-area: estus;
+}
+
+.blocco {
+  background: #ffffffdc;
+  border: #85542f 3px solid;
+  border-radius: 6px;
+  padding: 3px;
+  box-shadow: inset 0 0 20px 20px #c5c5d26e;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+.ds-btn {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: inherit;
+  display: block;
+  width: fit-content;
+  cursor: pointer;
+  background-color: rgb(77, 42, 42);
+  box-shadow: inset 0 0 14px 7px black;
+  border: 3px solid #4a2910;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.ds-btn:hover {
+  background-color: rgb(24, 12, 6);
+  box-shadow: #ffbc0321 0 0 10px 5px;
+  border: 3px solid #7b2c2c;
+  transform: scale(1.1);
+}
+.ds-btn:active {
+  background-color: rgb(88, 39, 14);
+  box-shadow: #ffbc0321 0 0 20px 10px;
+  border: 3px solid #7b2c2c;
+  transform: scale(1.2);
+}
+
+.ds-btn:disabled {
+  background: #ccc;
+  border-color: #afa18f;
+  color: black;
+  font-weight: bold;
+  cursor: not-allowed;
+}
+.ds-btn:disabled:hover {
+  transform: scale(1);
+  box-shadow: inset 0 0 14px 7px black;
+}
+
+.small-btn-container {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  width: 30px;
+  height: fit-content;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+.small-btn {
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 29px;
+  line-height: 21px;
+}
+.small-btn:last-child {
+  margin-bottom: 0;
+}
+.small-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.small-btn:active {
+  transform: scale(1.2);
+}
+.add {
+  background: rgb(43, 204, 105);
+}
+.edit {
+  background: rgb(43, 99, 204);
+  font-size: 14px;
+  z-index: 2;
+}
+.delete {
+  background: rgb(177, 42, 42);
+  font-size: 30px;
+  z-index: 2;
+}
+.edit:active {
+  background: rgb(2, 52, 160);
+  transform: scale(1.2);
+}
+.add:active {
+  background: rgb(8, 87, 38);
+  transform: scale(1.2);
+}
+.delete:active {
+  background: rgb(87, 8, 8);
+  transform: scale(1.2);
+}
+
+.selected-atk {
+  background: #ffc10730;
+  transition: background 0.3s ease;
+}
