@@ -12,7 +12,10 @@ pip install -r requirements.txt
 ## Usage
 To activate venv:
 ```bash
-venv\Scripts\deactivate.bat
+# on windows
+venv\Scripts\activate.bat
+# on mac
+source venv/bin/activate
 ```
 To start the webapp, run:
 ```bash
