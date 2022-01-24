@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher, afterUpdate } from 'svelte';
   import { isEmpty, getNextEl, getPrevEl, dropLast, drop, closest } from '../utils.js';
-  import { savedCard } from '../stores.js';
+  import { savedCards } from '../stores.js';
 
   export let id = '';
   export let card = {};
@@ -27,7 +27,7 @@
   $: card.immagine = card.immagine.toLowerCase().replace(' ', '_');
 
   afterUpdate(() => {
-    savedCard.set(JSON.stringify({ id, ...card }));
+    savedCards.set(JSON.stringify({ id, ...card }));
   });
 
   const dispatch = createEventDispatcher();

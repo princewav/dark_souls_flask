@@ -17,6 +17,12 @@ venv\Scripts\activate.bat
 # on mac
 source venv/bin/activate
 ```
+To build the frontend bundles, run:
+```bash
+cd src/client
+npm install
+npm run build
+```
 To start the webapp, run:
 ```bash
 python -m src.run

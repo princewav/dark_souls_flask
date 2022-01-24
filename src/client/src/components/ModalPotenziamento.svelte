@@ -1,7 +1,7 @@
 <script>
   import CartaModificabile from './CartaModificabile.svelte';
   import { createEventDispatcher, afterUpdate } from 'svelte';
-  import { savedPowerup } from '../stores.js';
+  import { savedPowerups } from '../stores.js';
   import { regex, capitalize, isEmpty } from '../utils.js';
 
   export let powerupData = '{}';
@@ -23,7 +23,7 @@
     : '';
 
   afterUpdate(() => {
-    savedPowerup.set(JSON.stringify({ id, ...powerup }));
+    savedPowerups.set(JSON.stringify({ id, ...powerup }));
   });
 
   const tipiIcona = [
@@ -50,7 +50,7 @@
     dispatch('closepowerupmodal');
   }
   function savePowerup() {
-    dispatch('save', $savedPowerup);
+    dispatch('save', $savedPowerups);
   }
 </script>
 

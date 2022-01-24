@@ -1,7 +1,7 @@
 <script>
   import CartaModificabile from './CartaModificabile.svelte';
   import { createEventDispatcher } from 'svelte';
-  import { savedCard } from '../stores.js';
+  import { savedCards } from '../stores.js';
 
   export let cardData = '{}';
   let { id, type, ...card } = JSON.parse(cardData);
@@ -11,7 +11,7 @@
     dispatch('closecardmodal');
   }
   function saveCard() {
-    dispatch('save', $savedCard);
+    dispatch('save', $savedCards);
   }
 </script>
 

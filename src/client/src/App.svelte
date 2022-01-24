@@ -30,38 +30,55 @@
         icone: [
           { immagine: 'dado blu', valore: 2 },
           { immagine: 'portata0', valore: 0 },
-          { immagine: 'magico', valore: 0 }
-        ]
-      }
+          { immagine: 'magico', valore: 0 },
+        ],
+      },
     ],
     scudo: { valore: 1, colore: 'blu' },
     contrasto: { valore: 0, colore: '' },
     schivata: 0,
-    potenziamenti: 2
+    potenziamenti: 2,
   };
 
   let templatePowerup = {
     immagine: 'heavy_gem',
     descrizione: 'Aggiungi un dado nero ad ogni attacco',
-    icona: { tipo: 'dado nero', valore: 1 }
+    icona: { tipo: 'dado nero', valore: 1 },
+  };
+
+  // la porcata della disperazione
+  let info = {
+    'arma-dx': templateCard,
+    'pot-dx1': {},
+    'pot-dx2': templatePowerup,
+    'arma-sx': {},
+    'pot-sx1': {},
+    'pot-sx2': {},
+    'arma-riserva': {},
+    'pot-riserva1': {},
+    'pot-riserva2': {},
+    armatura: {},
+    'pot-armatura1': {},
+    'pot-armatura2': {},
   };
 
   let cardData = null;
   let powerupData = null;
 
-  const addCard = e => {
+  const addCard = (e) => {
     showAddCardModal = true;
+    let id = e.detail.id
     cardData = JSON.stringify(e.detail);
   };
-  const editCard = e => {
+  const editCard = (e) => {
     showEditCardModal = true;
     cardData = JSON.stringify(e.detail);
   };
-  const addPowerup = e => {
+  const addPowerup = (e) => {
     showAddPowerupModal = true;
     powerupData = JSON.stringify(e.detail);
   };
-  const editPowerup = e => {
+  const editPowerup = (e) => {
     showEditPowerupModal = true;
     powerupData = JSON.stringify(e.detail);
   };
@@ -75,34 +92,32 @@
     showEditPowerupModal = false;
   };
 
-  const saveCard = e => {
+  const save = (e) => {
     const { id, ...cardData } = JSON.parse(e.detail);
-    templateCard = cardData;
+    info[id] = cardData;
     closeCardModal();
-  };
-  const savePowerup = e => {
-    const { id, ...powerupData } = JSON.parse(e.detail);
-    templatePowerup = powerupData;
     closePowerupModal();
   };
 </script>
 
 {#if showAddCardModal}
-  <ModalCarta {cardData} on:closecardmodal={closeCardModal} on:save={saveCard} />
+  <ModalCarta {cardData} on:closecardmodal={closeCardModal} on:save={save} />
 {:else if showEditCardModal}
-  <ModalCarta {cardData} on:closecardmodal={closeCardModal} on:save={saveCard} />
+  <ModalCarta {cardData} on:closecardmodal={closeCardModal} on:save={save} />
 {/if}
 
 {#if showAddPowerupModal}
   <ModalPotenziamento
     {powerupData}
     on:closepowerupmodal={closePowerupModal}
-    on:save={savePowerup} />
+    on:save={save}
+  />
 {:else if showEditPowerupModal}
   <ModalPotenziamento
     {powerupData}
     on:closepowerupmodal={closePowerupModal}
-    on:save={savePowerup} />
+    on:save={save}
+  />
 {/if}
 
 <main>
@@ -118,31 +133,72 @@
     <Segnalino id={'pendente'} />
     <Segnalino id={'estus'} />
     <Segnalino id={'brace'} />
-    <Carta id="arma-riserva" type="arma" on:add={addCard} on:edit={editCard} />
-    <Potenziamento id={'pot-riserva1'} type={'arma'} on:add={addPowerup} on:edit={editPowerup} />
-    <Potenziamento id={'pot-riserva2'} type={'arma'} on:add={addPowerup} on:edit={editPowerup} />
-    <Carta id="arma-dx" type="arma" card={templateCard} on:add={addCard} on:edit={editCard} />
+    <Carta
+      id="arma-riserva"
+      type="arma"
+      card={info['arma-riserva']}
+      on:add={addCard}
+      on:edit={editCard}
+    />
+    <Potenziamento
+      id={'pot-riserva1'}
+      type={'arma'}
+      powerup={info['pot-riserva1']}
+      on:add={addPowerup}
+      on:edit={editPowerup}
+    />
+    <Potenziamento
+      id={'pot-riserva2'}
+      type={'arma'}
+      powerup={info['pot-riserva2']}
+      on:add={addPowerup}
+      on:edit={editPowerup}
+    />
+    <Carta id="arma-dx" type="arma" card={info['arma-dx']} on:add={addCard} on:edit={editCard} />
     <Potenziamento
       id={'pot-dx1'}
       type={'arma'}
-      powerup={templatePowerup}
+      powerup={info['pot-dx1']}
       on:add={addPowerup}
-      on:edit={editPowerup} />
-    <Potenziamento id={'pot-dx2'} type={'arma'} on:add={addPowerup} on:edit={editPowerup} />
-    <Carta id="arma-sx" type="arma" on:add={addCard} on:edit={editCard} />
-    <Potenziamento id={'pot-sx1'} type={'arma'} on:add={addPowerup} on:edit={editPowerup} />
-    <Potenziamento id={'pot-sx2'} type={'arma'} on:add={addPowerup} on:edit={editPowerup} />
-    <Carta id="armatura" type="armatura" on:add={addCard} on:edit={editCard} />
+      on:edit={editPowerup}
+    />
+    <Potenziamento
+      id={'pot-dx2'}
+      type={'arma'}
+      powerup={info['pot-dx2']}
+      on:add={addPowerup}
+      on:edit={editPowerup}
+    />
+    <Carta id="arma-sx" type="arma" card={info['arma-sx']} on:add={addCard} on:edit={editCard} />
+    <Potenziamento
+      id={'pot-sx1'}
+      type={'arma'}
+      powerup={info['pot-sx1']}
+      on:add={addPowerup}
+      on:edit={editPowerup}
+    />
+    <Potenziamento
+      id={'pot-sx2'}
+      type={'arma'}
+      powerup={info['pot-sx2']}
+      on:add={addPowerup}
+      on:edit={editPowerup}
+    />
+    <Carta id="armatura" type="armatura" card={info['armatura']} on:add={addCard} on:edit={editCard} />
     <Potenziamento
       id={'pot-armatura1'}
       type={'armatura'}
+      powerup={info['pot-armatura1']}
       on:add={addPowerup}
-      on:edit={editPowerup} />
+      on:edit={editPowerup}
+    />
     <Potenziamento
       id={'pot-armatura2'}
       type={'armatura'}
+      powerup={info['pot-armatura2']}
       on:add={addPowerup}
-      on:edit={editPowerup} />
+      on:edit={editPowerup}
+    />
   </section>
 
   <section>
@@ -159,7 +215,7 @@
       <Dadi />
     </div>
     <div class="save">
-      <Salvataggio on:saveas={e => console.log(e.detail.saveAsName)} />
+      <Salvataggio on:saveas={(e) => console.log(e.detail.saveAsName)} />
     </div>
     <div class="flex">
       <Contatore id={'anime'} />

@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const savedCard = writable('{}');
-export const savedPowerup = writable('{}');
+export const savedCards = writable('{}');
+export const savedPowerups = writable('{}');
+export const savedPowerupsAsObjects = writable({});

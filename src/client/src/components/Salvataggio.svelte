@@ -10,7 +10,7 @@
 
   const dispatch = createEventDispatcher();
   function saveAs() {
-    post({ endpoint: 'save_as', data: { name: saveAsName } });
+    post({ endpoint: 'save_as', match_data: { name: saveAsName } });
     dispatch('saveas', { saveAsName });
   }
 </script>
@@ -41,7 +41,7 @@
   {#if openSaveAsModal}
     <div class="modal-container">
       <div class="modal">
-        <h1>Salva con nome:</h1>
+        <h1>Salva come:</h1>
         <p class="label">Nome slot salvataggio</p>
         <input type="text" bind:value={saveAsName} />
         <div class="btn-container">
@@ -62,7 +62,7 @@
   {/if}
   <div class="btn-container">
     <button class="ds-btn" disabled={lastSaved.length == 0}>Salva</button>
-    <button class="ds-btn" on:click={() => (openSaveAsModal = true)}>Salva con nome</button>
+    <button class="ds-btn" on:click={() => (openSaveAsModal = true)}>Salva come</button>
     <button class="ds-btn" on:click={() => (openLoadModal = true)}>Carica</button>
   </div>
 </div>

@@ -348,7 +348,7 @@
     font-size: 18px;
   }
   .carta:hover {
-    transform: scale(1.5);
+    transform: scale(1.2);
     position: relative;
     z-index: 20;
     box-shadow: #00000070 -1px 8px 10px 0px;
