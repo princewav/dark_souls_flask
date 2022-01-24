@@ -9,6 +9,7 @@
   import ModalCarta from './components/ModalCarta.svelte';
   import ModalPotenziamento from './components/ModalPotenziamento.svelte';
   import Salvataggio from './components/Salvataggio.svelte';
+  import { afterUpdate } from 'svelte';
   let showAddCardModal = false;
   let showEditCardModal = false;
   let showAddPowerupModal = false;
@@ -91,13 +92,18 @@
     showAddPowerupModal = false;
     showEditPowerupModal = false;
   };
+  const saveInfoLocally = () => {
+    window.localStorage.setItem('info', JSON.stringify(info))
+  };
 
   const save = (e) => {
     const { id, ...cardData } = JSON.parse(e.detail);
     info[id] = cardData;
     closeCardModal();
     closePowerupModal();
+    saveInfoLocally();
   };
+
 </script>
 
 {#if showAddCardModal}

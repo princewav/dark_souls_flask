@@ -59,9 +59,9 @@ export function regex(pattern, string) {
     return string.match(new RegExp(pattern)).filter((_, i) => i != 0)
 }
 
-export function post(params) {
+export function post(endpoint, payload) {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", params.endpoint, true);
+    xhr.open("POST", endpoint, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -69,5 +69,5 @@ export function post(params) {
             console.log(json);
         }
     };
-    xhr.send(JSON.stringify(params.data));
+    xhr.send(JSON.stringify(payload));
 }

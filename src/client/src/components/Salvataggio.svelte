@@ -10,7 +10,8 @@
 
   const dispatch = createEventDispatcher();
   function saveAs() {
-    post({ endpoint: 'save_as', match_data: { name: saveAsName } });
+    let payload = { ...window.localStorage, saveAsName }
+    post('save_as', payload);
     dispatch('saveas', { saveAsName });
   }
 </script>

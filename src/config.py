@@ -13,4 +13,4 @@ def check_path(path):
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    DATA_PATH = Path(__file__).parent.parent.parent / 'data'
+    DATA_PATH = Path(__file__).parent.parent / 'data'

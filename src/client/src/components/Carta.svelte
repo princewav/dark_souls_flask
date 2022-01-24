@@ -158,6 +158,7 @@
     transition: transform 0.2s ease-out;
     position: relative;
     z-index: 2;
+    user-select: none;
     -webkit-user-select: none;
     font-size: 13px;
     font-weight: bold;

@@ -5,7 +5,7 @@ from src import app
 
 def save_match(json_string, save_slot_name):
     with (app.config['DATA_PATH']/f'{save_slot_name}.json').open('w') as f:
-        json.dump(json_string, f, ensure_ascii=False)
+        json.dump(json_string, f)
 
 
 def load_match(save_slot_name):

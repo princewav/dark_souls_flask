@@ -5,7 +5,7 @@
 
   const toggleFlip = () => {
     flipped = !flipped;
-    console.log(flipped);
+    window.localStorage.setItem('segnalino-${id}', flipped)
   };
 </script>
 
