@@ -9,49 +9,84 @@
   import ModalCarta from './components/ModalCarta.svelte';
   import ModalPotenziamento from './components/ModalPotenziamento.svelte';
   import Salvataggio from './components/Salvataggio.svelte';
-  import { afterUpdate } from 'svelte';
   let showAddCardModal = false;
   let showEditCardModal = false;
   let showAddPowerupModal = false;
   let showEditPowerupModal = false;
-  let templateCard = {
-    portata: 0,
-    impugnatura: 2,
-    nome: 'Ascia Grande',
-    immagine: 'greataxe',
-    forza: 23,
-    destrezza: 22,
-    intelligenza: 0,
-    fede: 0,
-    attacchi: [
-      { costo: 0, icone: [{ immagine: 'dado blu', valore: 2 }] },
-      { costo: 3, icone: [{ immagine: 'dado arancio', valore: 2 }] },
-      {
-        costo: 3,
-        icone: [
-          { immagine: 'dado blu', valore: 2 },
-          { immagine: 'portata0', valore: 0 },
-          { immagine: 'magico', valore: 0 },
-        ],
-      },
-    ],
-    scudo: { valore: 1, colore: 'blu' },
-    contrasto: { valore: 0, colore: '' },
-    schivata: 0,
-    potenziamenti: 2,
-  };
-
+  // let templateCard = {
+  //   portata: 0,
+  //   impugnatura: 2,
+  //   nome: 'Ascia Grande',
+  //   immagine: 'greataxe',
+  //   forza: 23,
+  //   destrezza: 22,
+  //   intelligenza: 0,
+  //   fede: 0,
+  //   attacchi: [
+  //     { costo: 0, icone: [{ immagine: 'dado blu', valore: 2 }] },
+  //     { costo: 3, icone: [{ immagine: 'dado arancio', valore: 2 }] },
+  //     {
+  //       costo: 3,
+  //       icone: [
+  //         { immagine: 'dado blu', valore: 2 },
+  //         { immagine: 'portata0', valore: 0 },
+  //         { immagine: 'magico', valore: 0 },
+  //       ],
+  //     },
+  //   ],
+  //   scudo: { valore: 1, colore: 'blu' },
+  //   contrasto: { valore: 0, colore: '' },
+  //   schivata: 0,
+  //   potenziamenti: 2,
+  // };
+  let stats = [
+    {
+      name: 'forza',
+      levels: [
+        [16, 1],
+        [23, 0],
+        [32, 0],
+        [40, 0],
+      ],
+    },
+    {
+      name: 'destrezza',
+      levels: [
+        [9, 1],
+        [16, 0],
+        [25, 0],
+        [35, 0],
+      ],
+    },
+    {
+      name: 'intelligenza',
+      levels: [
+        [8, 1],
+        [15, 0],
+        [23, 0],
+        [30, 0],
+      ],
+    },
+    {
+      name: 'fede',
+      levels: [
+        [9, 1],
+        [16, 0],
+        [25, 0],
+        [35, 0],
+      ],
+    },
+  ];
   let templatePowerup = {
     immagine: 'heavy_gem',
     descrizione: 'Aggiungi un dado nero ad ogni attacco',
     icona: { tipo: 'dado nero', valore: 1 },
   };
 
-  // la porcata della disperazione
   let info = {
-    'arma-dx': templateCard,
+    'arma-dx': {},
     'pot-dx1': {},
-    'pot-dx2': templatePowerup,
+    'pot-dx2': {},
     'arma-sx': {},
     'pot-sx1': {},
     'pot-sx2': {},
@@ -62,13 +97,16 @@
     'pot-armatura1': {},
     'pot-armatura2': {},
   };
+  let segnalinoBrace = false;
+  let segnalinoEstus = false;
+  let segnalinoMoneta = false;
+  let segnalinoPendente = false;
 
   let cardData = null;
   let powerupData = null;
 
   const addCard = (e) => {
     showAddCardModal = true;
-    let id = e.detail.id
     cardData = JSON.stringify(e.detail);
   };
   const editCard = (e) => {
@@ -93,7 +131,7 @@
     showEditPowerupModal = false;
   };
   const saveInfoLocally = () => {
-    window.localStorage.setItem('info', JSON.stringify(info))
+    window.localStorage.setItem('info', JSON.stringify(info));
   };
 
   const save = (e) => {
@@ -104,6 +142,16 @@
     saveInfoLocally();
   };
 
+  function loadGame(e) {
+    let matchData = e.detail.matchData;
+    info = matchData.info;
+    segnalinoMoneta = JSON.parse(matchData['segnalino-moneta']);
+    segnalinoPendente = JSON.parse(matchData['segnalino-pendente']);
+    segnalinoBrace = JSON.parse(matchData['segnalino-brace']);
+    segnalinoEstus = JSON.parse(matchData['segnalino-estus']);
+
+    stats = JSON.parse(matchData.stats);
+  }
 </script>
 
 {#if showAddCardModal}
@@ -113,17 +161,9 @@
 {/if}
 
 {#if showAddPowerupModal}
-  <ModalPotenziamento
-    {powerupData}
-    on:closepowerupmodal={closePowerupModal}
-    on:save={save}
-  />
+  <ModalPotenziamento {powerupData} on:closepowerupmodal={closePowerupModal} on:save={save} />
 {:else if showEditPowerupModal}
-  <ModalPotenziamento
-    {powerupData}
-    on:closepowerupmodal={closePowerupModal}
-    on:save={save}
-  />
+  <ModalPotenziamento {powerupData} on:closepowerupmodal={closePowerupModal} on:save={save} />
 {/if}
 
 <main>
@@ -136,9 +176,9 @@
         <img src="images/nodo.png" alt="nodo" height="25" width="25" />
       </p>
     </div>
-    <Segnalino id={'pendente'} />
-    <Segnalino id={'estus'} />
-    <Segnalino id={'brace'} />
+    <Segnalino id={'pendente'} flipped={segnalinoPendente} />
+    <Segnalino id={'estus'} flipped={segnalinoEstus} />
+    <Segnalino id={'brace'} flipped={segnalinoBrace} />
     <Carta
       id="arma-riserva"
       type="arma"
@@ -190,7 +230,13 @@
       on:add={addPowerup}
       on:edit={editPowerup}
     />
-    <Carta id="armatura" type="armatura" card={info['armatura']} on:add={addCard} on:edit={editCard} />
+    <Carta
+      id="armatura"
+      type="armatura"
+      card={info['armatura']}
+      on:add={addCard}
+      on:edit={editCard}
+    />
     <Potenziamento
       id={'pot-armatura1'}
       type={'armatura'}
@@ -210,9 +256,9 @@
   <section>
     <div class="header flex">
       <h1>GUERRIERO</h1>
-      <Segnalino id={'moneta'} margin={'-30px'} />
+      <Segnalino id={'moneta'} margin={'-50px'} flipped={segnalinoMoneta} />
     </div>
-    <Livelli />
+    <Livelli {stats} />
     <Salute />
   </section>
 
@@ -221,7 +267,8 @@
       <Dadi />
     </div>
     <div class="save">
-      <Salvataggio on:saveas={(e) => console.log(e.detail.saveAsName)} />
+      <Salvataggio on:saveas={(e) => null} on:loadedGame={loadGame} />
+      on:closepowerupmodal={closePowerupModal}
     </div>
     <div class="flex">
       <Contatore id={'anime'} />
@@ -238,6 +285,7 @@
   }
   section {
     padding: 20px;
+    height: 100vh;
   }
   section:nth-child(2) {
     display: flex;

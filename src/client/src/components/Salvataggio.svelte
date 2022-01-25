@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { post } from '../utils.js';
-  let slots = [{ nome: 'SalcyPrincy', giorno: '04/06/2020', ora: '16:34', attivo: false }];
+  let slots = [{ name: 'SalcyPrincy', date: '04/06/2020', time: '16:34' }];
   let openLoadModal = false;
   let openSaveAsModal = false;
   let saveAsName = '';
@@ -9,10 +9,33 @@
   let slotToLoad = '';
 
   const dispatch = createEventDispatcher();
+  async function openLoad() {
+    const res = await fetch('/slots');
+    slots = await res.json() || [];
+    openLoadModal = true;
+  }
   function saveAs() {
-    let payload = { ...window.localStorage, saveAsName }
+    let date = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString();
+    let payload = { ...window.localStorage, saveAsName, date, time };
     post('save_as', payload);
     dispatch('saveas', { saveAsName });
+    lastSaved = saveAsName;
+    openSaveAsModal = false;
+    alert(`Saved "${lastSaved}"!`);
+  }
+  async function deleteSlot(name) {
+    post('delete_slot', { name });
+    const res = await fetch('/slots');
+    slots = await res.json() || [];
+  }
+  async function loadMatch(name){
+    const res = await fetch('/load_match/'+name);
+    let matchData = await res.json() || [];
+    dispatch('loadedGame', { matchData });
+    openLoadModal = false;
+    lastSaved = name
+    saveAsName = name
   }
 </script>
 
@@ -23,12 +46,20 @@
         <h1>Scegli slot partita:</h1>
         <div class="slot-container">
           {#each slots as slot, i}
-            <div class="slot">
+            <div class="slot" on:click={()=>{loadMatch(slot.name)}}>
               <img src="images/warrior_pic.png" height="70" alt="pic" />
               <div class="slot-info">
-                <p class="slot-name">{slot.nome}</p>
+                <p class="slot-name">{slot.name}</p>
                 <p>Ultimo accesso:</p>
-                <p>{slot.giorno} - {slot.ora}</p>
+                <p>{slot.date} - {slot.time}</p>
+              </div>
+              <div
+                class="small-btn delete"
+                on:click={() => {
+                  deleteSlot(slot.name);
+                }}
+              >
+                ×
               </div>
             </div>
           {/each}
@@ -62,9 +93,9 @@
     <h5>Nessun salvataggio attivo</h5>
   {/if}
   <div class="btn-container">
-    <button class="ds-btn" disabled={lastSaved.length == 0}>Salva</button>
+    <button class="ds-btn" on:click={saveAs} disabled={lastSaved.length == 0}>Salva</button>
     <button class="ds-btn" on:click={() => (openSaveAsModal = true)}>Salva come</button>
-    <button class="ds-btn" on:click={() => (openLoadModal = true)}>Carica</button>
+    <button class="ds-btn" on:click={openLoad}>Carica</button>
   </div>
 </div>
 
@@ -122,6 +153,9 @@
   }
   .slot-container {
     margin-bottom: 15px;
+    max-height: 500px;
+    overflow: scroll;
+    padding-right: 10px;
   }
 
   .slot {
@@ -140,7 +174,6 @@
     border-radius: 6px;
   }
   .slot-info {
-    width: 100%;
     font-size: 0.7em;
   }
   .slot-name {

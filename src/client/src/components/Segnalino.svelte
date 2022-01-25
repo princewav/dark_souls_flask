@@ -1,11 +1,11 @@
 <script>
   export let id;
   export let margin = 'auto';
-  let flipped = false;
+  export let flipped;
 
   const toggleFlip = () => {
     flipped = !flipped;
-    window.localStorage.setItem('segnalino-${id}', flipped)
+    window.localStorage.setItem('segnalino-' + id, flipped);
   };
 </script>
 

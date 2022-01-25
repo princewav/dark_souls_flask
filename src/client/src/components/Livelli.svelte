@@ -1,17 +1,12 @@
 <script>
   let headers = ['', 'BASE', 'TIER 1', 'TIER 2', 'TIER 3'];
-  let stats = [
-    { name: 'forza', levels: [[16, 1], [23, 0], [32, 0], [40, 0]] },
-    { name: 'destrezza', levels: [[9, 1], [16, 0], [25, 0], [35, 0]] },
-    { name: 'intelligenza', levels: [[8, 1], [15, 0], [23, 0], [30, 0]] },
-    { name: 'fede', levels: [[9, 1], [16, 0], [25, 0], [35, 0]] }
-  ];
+  export let stats;
 
   function upgrade(stat, i) {
     let curr = stat.levels[i];
     if ((i === 3 && stat.levels[2][1]) || (!stat.levels[i + 1][1] && stat.levels[i - 1][1]))
       stat.levels[i] = [curr[0], !curr[1]];
-
+    window.localStorage.setItem('stats', JSON.stringify(stats))
     stats = stats;
   }
 </script>
