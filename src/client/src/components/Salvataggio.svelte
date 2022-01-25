@@ -11,7 +11,7 @@
   const dispatch = createEventDispatcher();
   async function openLoad() {
     const res = await fetch('/slots');
-    slots = await res.json() || [];
+    slots = (await res.json()) || [];
     openLoadModal = true;
   }
   function saveAs() {
@@ -25,17 +25,20 @@
     alert(`Saved "${lastSaved}"!`);
   }
   async function deleteSlot(name) {
-    post('delete_slot', { name });
-    const res = await fetch('/slots');
-    slots = await res.json() || [];
+    const confirmation = confirm('Vuoi davvero eliminare ' + name + '?');
+    if (confirmation) {
+      post('delete_slot', { name });
+      const res = await fetch('/slots');
+      slots = (await res.json()) || [];
+    }
   }
-  async function loadMatch(name){
-    const res = await fetch('/load_match/'+name);
-    let matchData = await res.json() || [];
+  async function loadMatch(name) {
+    const res = await fetch('/load_match/' + name);
+    let matchData = (await res.json()) || [];
     dispatch('loadedGame', { matchData });
     openLoadModal = false;
-    lastSaved = name
-    saveAsName = name
+    lastSaved = name;
+    saveAsName = name;
   }
 </script>
 
@@ -46,11 +49,16 @@
         <h1>Scegli slot partita:</h1>
         <div class="slot-container">
           {#each slots as slot, i}
-            <div class="slot" on:click={()=>{loadMatch(slot.name)}}>
+            <div
+              class="slot"
+              on:click|self={() => {
+                loadMatch(slot.name);
+              }}
+            >
               <img src="images/warrior_pic.png" height="70" alt="pic" />
               <div class="slot-info">
                 <p class="slot-name">{slot.name}</p>
-                <p>Ultimo accesso:</p>
+                <p>Ultimo salvataggio:</p>
                 <p>{slot.date} - {slot.time}</p>
               </div>
               <div
