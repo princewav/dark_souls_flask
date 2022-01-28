@@ -1,15 +1,23 @@
 <script>
   export let id;
-  let total = 0;
+  export let total = 0;
+  function subtract(){
+    total > 0 ? (total -= 1) : 0
+    window.localStorage.setItem(id, total)
+  }
+  function add(){
+    total += 1
+    window.localStorage.setItem(id, total)
+  }
 </script>
 
 <div class="flex">
-  <span class="sign" on:click={() => (total > 0 ? (total -= 1) : 0)}>−</span>
+  <span class="sign" on:click={subtract}>−</span>
   <div class="container">
     <img src="images/{id}.png" alt={id} />
     <span class="total">{total}</span>
   </div>
-  <span class="sign" on:click={() => (total += 1)}>+</span>
+  <span class="sign" on:click={add}>+</span>
 </div>
 
 <style>

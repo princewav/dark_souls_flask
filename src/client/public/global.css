@@ -18,6 +18,7 @@ body {
   /* background: url('images/bg-pattern.jpg'); */
   overflow-x: hidden;
   background-size: auto 100vh;
+  background-position: center;
 }
 
 body {

@@ -51,7 +51,7 @@
           {#each slots as slot, i}
             <div
               class="slot"
-              on:click|self={() => {
+              on:click={() => {
                 loadMatch(slot.name);
               }}
             >
@@ -63,7 +63,7 @@
               </div>
               <div
                 class="small-btn delete"
-                on:click={() => {
+                on:click|stopPropagation={() => {
                   deleteSlot(slot.name);
                 }}
               >

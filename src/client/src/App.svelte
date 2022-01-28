@@ -101,6 +101,8 @@
   let segnalinoEstus = false;
   let segnalinoMoneta = false;
   let segnalinoPendente = false;
+  let anime = 0
+  let falo = 0
 
   let cardData = null;
   let powerupData = null;
@@ -149,7 +151,8 @@
     segnalinoPendente = JSON.parse(matchData['segnalino-pendente']);
     segnalinoBrace = JSON.parse(matchData['segnalino-brace']);
     segnalinoEstus = JSON.parse(matchData['segnalino-estus']);
-
+    anime = parseInt(matchData.anime | '0') ;
+    falo = parseInt(matchData.falo| '0');
     stats = JSON.parse(matchData.stats);
   }
 </script>
@@ -271,8 +274,8 @@
       on:closepowerupmodal={closePowerupModal}
     </div>
     <div class="flex">
-      <Contatore id={'anime'} />
-      <Contatore id={'falo'} />
+      <Contatore id={'anime'} total={anime} />
+      <Contatore id={'falo'} total={falo}/>
     </div>
   </section>
 </main>
